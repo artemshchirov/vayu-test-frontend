@@ -34,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <>
-      <button className='btn btn-neutral text-white' onClick={handleOpenModal}>
+      <button className='btn btn-neutral' onClick={handleOpenModal}>
         Open Modal
       </button>
       <dialog id='my_modal_1' className='modal shadow-md'>
@@ -45,7 +45,7 @@ const Modal: React.FC<ModalProps> = ({
           </form>
           <div className='flex justify-between px-6'>
             <button
-              className='btn btn-neutral text-white disabled:text-white w-[80px]'
+              className='btn btn-neutral disabled w-[80px]'
               onClick={handleBackStep}
               disabled={currentStep === 1}
             >
@@ -53,7 +53,7 @@ const Modal: React.FC<ModalProps> = ({
             </button>
             {currentStep < 3 ? (
               <button
-                className='btn btn-neutral text-white disabled:text-white w-[80px]'
+                className='btn btn-neutral disabled w-[80px]'
                 onClick={handleNextStep}
                 disabled={isNextDisabled}
               >
@@ -61,7 +61,7 @@ const Modal: React.FC<ModalProps> = ({
               </button>
             ) : (
               <button
-                className='btn btn-accent text-white w-[80px]'
+                className='btn btn-accent w-[80px]'
                 onClick={handleCloseModal}
                 disabled={isNextDisabled}
               >
