@@ -34,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <>
-      <button className='btn btn-neutral' onClick={handleOpenModal}>
+      <button className='btn btn-neutral text-white' onClick={handleOpenModal}>
         Open Modal
       </button>
       <dialog id='my_modal_1' className='modal shadow-md'>
