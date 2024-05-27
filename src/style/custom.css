@@ -1,0 +1,22 @@
+/******************
+* STYLE SCROLLBAR *
+*******************/
+:root {
+  --primary: #1f2937;
+  --secondary: whitesmoke;
+  color: var(--secondary);
+}
+
+*::-webkit-scrollbar {
+  background: var(--primary);
+  width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--primary);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border: 3px solid var(--primary);
+}
