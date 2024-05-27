@@ -12,10 +12,7 @@ const Footer: FC = () => {
       </span>
       <ul className='flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0'>
         <li>
-          <CustomLink
-            href='https://github.com/artemshchirov/web-starter'
-            className='hover:underline'
-          >
+          <CustomLink href='https://github.com/artemshchirov/vayu' className='hover:underline'>
             GitHub
           </CustomLink>
         </li>

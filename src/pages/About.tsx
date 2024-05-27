@@ -6,11 +6,12 @@ import Section from '../layouts/Section'
 const About: FC = () => {
   return (
     <Page>
-      <Section className='max-w-[60vw]'>
-        <h1 className='max-w-max mx-auto text-4xl font-medium'>Web Starter</h1>
-        <p className='text-xl py-4 max-w-[650px] text-center mx-auto'>
-          This template starter kit is equipped with a robust set of technologies designed for
-          building modern web applications <strong>fast</strong> and <strong>efficiently</strong>.
+      <Section className='max-w-[60vw] bg-gray-800 text-gray-100'>
+        <h1 className='max-w-max mx-auto text-4xl font-medium'>User Info Stepper</h1>
+        <p className='text-lg py-4 max-w-[650px] text-center mx-auto'>
+          User Info Stepper, a modal workflow with three steps using React and TypeScript. The
+          workflow collect and then review personal information from a user. The modal should have
+          "Back", "Next", and "Finish" buttons to control the workflow
         </p>
         <p className='text-lg pb-2'>Here’s what’s included:</p>
         <ul className='list-disc pl-5 space-y-2 text-md'>
@@ -33,9 +34,6 @@ const About: FC = () => {
           <li>
             <strong>DaisyUI:</strong> A rich UI component library to enhance and simplify React
             applications.
-          </li>
-          <li>
-            <strong>Axios:</strong> A promise-based HTTP client for the browser and Node.js.
           </li>
           <li>
             <strong>ESLint:</strong> The pluggable linting utility for JavaScript and JSX,

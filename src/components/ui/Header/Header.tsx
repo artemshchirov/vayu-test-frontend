@@ -13,7 +13,7 @@ const Header: FC = () => {
         <CustomLink href={ROUTE_PATHS.HOME} className='flex items-center'>
           <img src={logo} className='h-6 mr-3 sm:h-10' alt='App Logo' />
           <span className='self-center text-xl font-semibold text-black dark:text-white'>
-            Web Starter
+            Vayu User Info Stepper
           </span>
         </CustomLink>
 
@@ -28,13 +28,6 @@ const Header: FC = () => {
                 Home
               </CustomLink>
             </li>
-            <CustomLink
-              href={ROUTE_PATHS.POSTS}
-              className='mr-auto block py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
-              activeClassName='dark:text-white underline'
-            >
-              Posts
-            </CustomLink>
             <li>
               <CustomLink
                 href={ROUTE_PATHS.ABOUT}
@@ -42,15 +35,6 @@ const Header: FC = () => {
                 activeClassName='dark:text-white underline'
               >
                 About
-              </CustomLink>
-            </li>
-            <li>
-              <CustomLink
-                href={ROUTE_PATHS.CONTACT}
-                className='block py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
-                activeClassName='dark:text-white underline'
-              >
-                Contact
               </CustomLink>
             </li>
           </ul>
