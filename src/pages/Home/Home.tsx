@@ -1,38 +1,22 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
+
 import Page from '../../layouts/Page'
 import Section from '../../layouts/Section'
 import Modal from './Modal'
 import FirstNameLastNameForm from './FirstNameLastNameForm'
 import AgeForm from './AgeForm'
 import ReviewForm from './ReviewForm'
+import LocalStorage from '../../utils/localStorage'
 
 const Home: FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [isNextDisabled, setIsNextDisabled] = useState(true)
   const [age, setAge] = useState('')
+  const [showToast, setShowToast] = useState(false)
 
-  const validateForm = () => {
-    switch (currentStep) {
-      case 1:
-        setIsNextDisabled(!(firstName.trim() && lastName.trim()))
-        break
-      case 2:
-        setIsNextDisabled(!(age.trim() && !Number.isNaN(Number(age)) && Number(age) > 0))
-        break
-      case 3:
-        setIsNextDisabled(false)
-        break
-      default:
-        setIsNextDisabled(true)
-    }
-  }
-
-  useEffect(() => {
-    validateForm()
-  }, [firstName, lastName, age, currentStep])
+  const userDataStorage = new LocalStorage('userData', '{}')
 
   const handleNextStep = () => {
     if (!isNextDisabled) {
@@ -45,29 +29,35 @@ const Home: FC = () => {
   }
 
   const handleFinish = () => {
-    console.log('Data Submitted:', { firstName, lastName, age })
+    console.info('Data Submitted:', { firstName, lastName, age })
+
+    userDataStorage.save({ firstName, lastName, age })
+
     setCurrentStep(1)
     setFirstName('')
     setLastName('')
     setAge('')
-    setIsModalOpen(false)
+
+    setShowToast(true)
+    setTimeout(() => setShowToast(false), 3000)
   }
 
   const updateFirstName = (name: string) => {
     setFirstName(name)
-    validateForm()
   }
 
   const updateLastName = (name: string) => {
     setLastName(name)
-    validateForm()
+  }
+
+  const handleValidationChange = (isValid: boolean) => {
+    setIsNextDisabled(!isValid)
   }
 
   return (
     <Page>
       <Section className='max-w-max'>
         <Modal
-          onClose={handleFinish}
           currentStep={currentStep}
           handleNextStep={handleNextStep}
           handleBackStep={handleBackStep}
@@ -80,12 +70,23 @@ const Home: FC = () => {
               lastName={lastName}
               setFirstName={updateFirstName}
               setLastName={updateLastName}
+              onValidationChange={handleValidationChange}
             />
           )}
-          {currentStep === 2 && <AgeForm age={age} setAge={setAge} />}
+          {currentStep === 2 && (
+            <AgeForm age={age} setAge={setAge} onValidationChange={handleValidationChange} />
+          )}
           {currentStep === 3 && <ReviewForm firstName={firstName} lastName={lastName} age={age} />}
         </Modal>
       </Section>
+
+      {showToast && (
+        <div className='toast toast-top toast-center'>
+          <div className='alert alert-success'>
+            <span>Profile data saved successfully.</span>
+          </div>
+        </div>
+      )}
     </Page>
   )
 }

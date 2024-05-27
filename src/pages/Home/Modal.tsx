@@ -4,7 +4,6 @@ interface ModalProps {
   children: ReactNode
   currentStep: number
   isNextDisabled: boolean
-  onClose?: () => void
   handleNextStep: () => void
   handleBackStep: () => void
   handleFinish: () => void
@@ -14,7 +13,6 @@ const Modal: React.FC<ModalProps> = ({
   children,
   currentStep,
   isNextDisabled,
-  onClose,
   handleNextStep,
   handleBackStep,
   handleFinish,
@@ -37,17 +35,12 @@ const Modal: React.FC<ModalProps> = ({
   return (
     <>
       <button className='btn text-white' onClick={handleOpenModal}>
-        open modal
+        Open Modal
       </button>
-      <dialog id='my_modal_1' className='modal'>
+      <dialog id='my_modal_1' className='modal shadow-md'>
         <div className='modal-box bg-white'>
           <form method='dialog'>
-            <button
-              className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
-              onClick={onClose}
-            >
-              ✕
-            </button>
+            <button className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'>✕</button>
             {children}
           </form>
           <div className='flex justify-between px-6'>
