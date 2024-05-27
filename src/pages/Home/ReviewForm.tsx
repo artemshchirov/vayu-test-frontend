@@ -8,17 +8,19 @@ interface ReviewFormProps {
 
 const ReviewForm: React.FC<ReviewFormProps> = ({ firstName, lastName, age }) => {
   return (
-    <div className='p-6 bg-white'>
-      <h2 className='text-lg font-bold mb-4'>Review Your Information</h2>
-      <ul>
-        <li>
-          <strong>First Name:</strong> {firstName}
+    <div className='m-6 p-6 bg-white rounded-lg shadow-md'>
+      <h2 className='text-xl font-bold mb-4 text-gray-800 max-w-max mx-auto'>
+        Review Your Information (3/3)
+      </h2>
+      <ul className='list-disc pl-5 space-y-2'>
+        <li className='text-md text-gray-700'>
+          <strong>First Name:</strong> <span className='text-gray-600'>{firstName}</span>
         </li>
-        <li>
-          <strong>Last Name:</strong> {lastName}
+        <li className='text-md text-gray-700'>
+          <strong>Last Name:</strong> <span className='text-gray-600'>{lastName}</span>
         </li>
-        <li>
-          <strong>Age:</strong> {age}
+        <li className='text-md text-gray-700'>
+          <strong>Age:</strong> <span className='text-gray-600'>{age}</span>
         </li>
       </ul>
     </div>
