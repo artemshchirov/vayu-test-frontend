@@ -19,7 +19,8 @@
     "react-router-dom": "^6.23.1",
     "tailwind-merge": "^2.3.0",
     "vite": "^5.2.11",
-    "vite-plugin-eslint": "^1.8.1"
+    "vite-plugin-eslint": "^1.8.1",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",
