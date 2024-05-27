@@ -3,10 +3,57 @@ import { FC, useState } from 'react'
 import Page from '../../layouts/Page'
 import Section from '../../layouts/Section'
 import Modal from './Modal'
-import FirstNameLastNameForm from './FirstNameLastNameForm'
-import AgeForm from './AgeForm'
-import ReviewForm from './ReviewForm'
+import FirstNameLastNameForm, { FirstNameLastNameFormProps } from './FirstNameLastNameForm'
+import AgeForm, { AgeFormProps } from './AgeForm'
+import ReviewForm, { ReviewFormProps } from './ReviewForm'
 import LocalStorage from '../../utils/localStorage'
+import { FormContextProvider } from '../../context/FormContextProvider'
+import Toast from '../../components/ui/Toast'
+
+interface State {
+  firstName: string
+  lastName: string
+  age: string
+}
+
+interface Handlers {
+  setFirstName: (name: string) => void
+  setLastName: (name: string) => void
+  setAge: (age: string) => void
+  handleValidationChange: (isValid: boolean) => void
+}
+
+export const STEPS = [
+  {
+    id: 1,
+    Component: (props: FirstNameLastNameFormProps) => <FirstNameLastNameForm {...props} />,
+    getProps: (state: State, handlers: Handlers): FirstNameLastNameFormProps => ({
+      firstName: state.firstName,
+      lastName: state.lastName,
+      setFirstName: handlers.setFirstName,
+      setLastName: handlers.setLastName,
+      onValidationChange: handlers.handleValidationChange,
+    }),
+  },
+  {
+    id: 2,
+    Component: (props: AgeFormProps) => <AgeForm {...props} />,
+    getProps: (state: State, handlers: Handlers): AgeFormProps => ({
+      age: state.age,
+      setAge: handlers.setAge,
+      onValidationChange: handlers.handleValidationChange,
+    }),
+  },
+  {
+    id: 3,
+    Component: (props: ReviewFormProps) => <ReviewForm {...props} />,
+    getProps: (state: State): ReviewFormProps => ({
+      firstName: state.firstName,
+      lastName: state.lastName,
+      age: state.age,
+    }),
+  },
+] as const
 
 const Home: FC = () => {
   const [currentStep, setCurrentStep] = useState(1)
@@ -19,13 +66,15 @@ const Home: FC = () => {
   const userDataStorage = new LocalStorage('userData', '{}')
 
   const handleNextStep = () => {
-    if (!isNextDisabled) {
+    if (!isNextDisabled && currentStep < STEPS.length) {
       setCurrentStep(currentStep + 1)
     }
   }
 
   const handleBackStep = () => {
-    setCurrentStep(currentStep - 1)
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1)
+    }
   }
 
   const handleFinish = () => {
@@ -42,51 +91,46 @@ const Home: FC = () => {
     setTimeout(() => setShowToast(false), 3000)
   }
 
-  const updateFirstName = (name: string) => {
-    setFirstName(name)
-  }
-
-  const updateLastName = (name: string) => {
-    setLastName(name)
-  }
-
   const handleValidationChange = (isValid: boolean) => {
     setIsNextDisabled(!isValid)
   }
 
+  const state = {
+    firstName,
+    lastName,
+    age,
+  }
+
+  const handlers = {
+    setFirstName,
+    setLastName,
+    setAge,
+    handleValidationChange,
+  }
+
   return (
     <Page>
-      <Section className='max-w-max'>
-        <Modal
-          currentStep={currentStep}
-          handleNextStep={handleNextStep}
-          handleBackStep={handleBackStep}
-          handleFinish={handleFinish}
-          isNextDisabled={isNextDisabled}
-        >
-          {currentStep === 1 && (
-            <FirstNameLastNameForm
-              firstName={firstName}
-              lastName={lastName}
-              setFirstName={updateFirstName}
-              setLastName={updateLastName}
-              onValidationChange={handleValidationChange}
-            />
-          )}
-          {currentStep === 2 && (
-            <AgeForm age={age} setAge={setAge} onValidationChange={handleValidationChange} />
-          )}
-          {currentStep === 3 && <ReviewForm firstName={firstName} lastName={lastName} age={age} />}
-        </Modal>
-      </Section>
-
-      {showToast && (
-        <div className='toast toast-top toast-center'>
-          <div className='alert alert-success'>
-            <span>Profile data saved successfully.</span>
-          </div>
-        </div>
-      )}
+      <FormContextProvider>
+        <Section className='max-w-max'>
+          <Modal
+            currentStep={currentStep}
+            handleNextStep={handleNextStep}
+            handleBackStep={handleBackStep}
+            handleFinish={handleFinish}
+            isNextDisabled={isNextDisabled}
+          >
+            {STEPS.map(step => {
+              if (currentStep === step.id) {
+                const StepComponent = step.Component as FC
+                const stepProps = step.getProps(state, handlers)
+                return <StepComponent key={step.id} {...stepProps} />
+              }
+              return null
+            })}
+          </Modal>
+        </Section>
+        <Toast message='Profile data saved to local storage' isVisible={showToast} />
+      </FormContextProvider>
     </Page>
   )
 }

@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import * as yup from 'yup'
 import debounce from '../../utils/debounce'
+import Title from '../../components/ui/Title'
+import FormLayout from '../../layouts/FormLayout'
+import ERROR_MESSAGES from '../../utils/constants'
 
-interface AgeFormProps {
+export interface AgeFormProps {
   age: string
   setAge: (age: string) => void
   onValidationChange: (isValid: boolean) => void
@@ -11,10 +14,10 @@ interface AgeFormProps {
 const ageSchema = yup.object().shape({
   age: yup
     .number()
-    .min(1, 'Age must be at least 1 year old.')
-    .max(120, 'Age must be no more than 120 years old.')
-    .required('Age is required')
-    .integer('Age must be an integer'),
+    .min(1, ERROR_MESSAGES.AGE_MIN)
+    .max(120, ERROR_MESSAGES.AGE_MAX)
+    .required(ERROR_MESSAGES.AGE_REQUIRED)
+    .integer(ERROR_MESSAGES.AGE_INTEGER),
 })
 
 const AgeForm: React.FC<AgeFormProps> = ({ age, setAge, onValidationChange }) => {
@@ -33,7 +36,7 @@ const AgeForm: React.FC<AgeFormProps> = ({ age, setAge, onValidationChange }) =>
       if (err instanceof Error) {
         setAgeError(err.message)
       } else {
-        setAgeError('An unexpected error occurred')
+        setAgeError(ERROR_MESSAGES.UNEXPECTED_ERROR)
       }
     }
   }, [])
@@ -43,7 +46,7 @@ const AgeForm: React.FC<AgeFormProps> = ({ age, setAge, onValidationChange }) =>
       if (age) {
         validateAge(age)
       } else if (touchedAge) {
-        setAgeError('Age is required')
+        setAgeError(ERROR_MESSAGES.AGE_REQUIRED)
       }
     }, 250),
     [age, touchedAge, validateAge]
@@ -60,22 +63,22 @@ const AgeForm: React.FC<AgeFormProps> = ({ age, setAge, onValidationChange }) =>
   }
 
   return (
-    <div className='m-6 p-6 bg-white rounded-lg shadow-md'>
-      <h2 className='text-xl font-bold mb-4 text-gray-800 max-w-max mx-auto'>
-        Enter Your Age (2/3)
-      </h2>
-      <label className='input input-bordered flex items-center gap-2 bg-transparent'>
-        Age
-        <input
-          type='number'
-          className='grow bg-transparent'
-          placeholder='24'
-          value={age}
-          onChange={handleAgeChange}
-        />
-      </label>
-      {touchedAge && ageError && <p className='text-red-500 text-xs mt-1'>{ageError}</p>}
-    </div>
+    <>
+      <Title> Enter Your Age (2/3)</Title>
+      <FormLayout>
+        <label className='input input-bordered flex items-center gap-2 bg-transparent'>
+          Age
+          <input
+            type='number'
+            className='grow bg-transparent'
+            placeholder='24'
+            value={age}
+            onChange={handleAgeChange}
+          />
+        </label>
+        {touchedAge && ageError && <p className='text-red-500 text-xs mt-1'>{ageError}</p>}
+      </FormLayout>
+    </>
   )
 }
 

@@ -1,8 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import * as yup from 'yup'
 import debounce from '../../utils/debounce'
+import Title from '../../components/ui/Title'
+import FormLayout from '../../layouts/FormLayout'
+import ERROR_MESSAGES from '../../utils/constants'
 
-interface FirstNameLastNameFormProps {
+export interface FirstNameLastNameFormProps {
   firstName: string
   lastName: string
   setFirstName: (name: string) => void
@@ -16,10 +19,9 @@ const nameSchema = yup.object().shape({
     .matches(
       // Matches alphabetic EN and HE characters and single spaces
       /^[A-Za-z\u0590-\u05FF\uFB1D-\uFB4F]+(?:\s[A-Za-z\u0590-\u05FF\uFB1D-\uFB4F]+)*$/,
-      'Only alphabetic EN and HE characters and single spaces allowed'
+      ERROR_MESSAGES.NAME_PATTERN
     )
-
-    .required('This field is required'),
+    .required(ERROR_MESSAGES.NAME_REQUIRED),
 })
 
 const FirstNameLastNameForm: React.FC<FirstNameLastNameFormProps> = ({
@@ -49,7 +51,7 @@ const FirstNameLastNameForm: React.FC<FirstNameLastNameFormProps> = ({
         if (err instanceof Error) {
           setError(err.message)
         } else {
-          setError('An unexpected error occurred')
+          setError(ERROR_MESSAGES.UNEXPECTED_ERROR)
         }
       }
     },
@@ -61,7 +63,7 @@ const FirstNameLastNameForm: React.FC<FirstNameLastNameFormProps> = ({
       if (firstName) {
         validateField('firstName', firstName, setFirstNameError)
       } else if (touchedFirstName) {
-        setFirstNameError('This field is required')
+        setFirstNameError(ERROR_MESSAGES.NAME_REQUIRED)
       }
     }, 250),
     [firstName, touchedFirstName, validateField]
@@ -72,7 +74,7 @@ const FirstNameLastNameForm: React.FC<FirstNameLastNameFormProps> = ({
       if (lastName) {
         validateField('lastName', lastName, setLastNameError)
       } else if (touchedLastName) {
-        setLastNameError('This field is required')
+        setLastNameError(ERROR_MESSAGES.NAME_REQUIRED)
       }
     }, 250),
     [lastName, touchedLastName, validateField]
@@ -96,39 +98,39 @@ const FirstNameLastNameForm: React.FC<FirstNameLastNameFormProps> = ({
   }
 
   return (
-    <div className='m-6 p-6 bg-white rounded-lg shadow-md'>
-      <h2 className='text-xl font-bold mb-4 text-gray-800 max-w-max mx-auto'>
-        Enter Your Name (1/3)
-      </h2>
-      <ul className='flex flex-col gap-y-4'>
-        <li>
-          <label className='input input-bordered flex items-center gap-2 bg-transparent'>
-            First Name
-            <input
-              type='text'
-              className='grow bg-transparent'
-              placeholder='Dor'
-              value={firstName}
-              onChange={handleFirstNameChange}
-            />
-          </label>
-          {firstNameError && <p className='text-red-500 text-xs mt-1'>{firstNameError}</p>}
-        </li>
-        <li>
-          <label className='input input-bordered flex items-center gap-2 bg-transparent'>
-            Last Name
-            <input
-              type='text'
-              className='grow bg-transparent'
-              placeholder='Zammir'
-              value={lastName}
-              onChange={handleLastNameChange}
-            />
-          </label>
-          {lastNameError && <p className='text-red-500 text-xs mt-1'>{lastNameError}</p>}
-        </li>
-      </ul>
-    </div>
+    <>
+      <Title>Enter Your Name (1/3)</Title>
+      <FormLayout>
+        <ul className='flex flex-col gap-y-4'>
+          <li>
+            <label className='input input-bordered flex items-center gap-2 bg-transparent'>
+              First Name
+              <input
+                type='text'
+                className='grow bg-transparent'
+                placeholder='Dor'
+                value={firstName}
+                onChange={handleFirstNameChange}
+              />
+            </label>
+            {firstNameError && <p className='text-red-500 text-xs mt-1'>{firstNameError}</p>}
+          </li>
+          <li>
+            <label className='input input-bordered flex items-center gap-2 bg-transparent'>
+              Last Name
+              <input
+                type='text'
+                className='grow bg-transparent'
+                placeholder='Zammir'
+                value={lastName}
+                onChange={handleLastNameChange}
+              />
+            </label>
+            {lastNameError && <p className='text-red-500 text-xs mt-1'>{lastNameError}</p>}
+          </li>
+        </ul>
+      </FormLayout>
+    </>
   )
 }
 
