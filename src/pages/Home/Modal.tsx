@@ -45,7 +45,7 @@ const Modal: React.FC<ModalProps> = ({
           </form>
           <div className='flex justify-between px-6'>
             <button
-              className='btn text-white disabled:text-white w-[80px]'
+              className='btn btn-primary text-white disabled:text-white w-[80px]'
               onClick={handleBackStep}
               disabled={currentStep === 1}
             >
@@ -53,7 +53,7 @@ const Modal: React.FC<ModalProps> = ({
             </button>
             {currentStep < 3 ? (
               <button
-                className='btn text-white disabled:text-white w-[80px]'
+                className='btn btn-primary text-white disabled:text-white w-[80px]'
                 onClick={handleNextStep}
                 disabled={isNextDisabled}
               >
