@@ -4,7 +4,7 @@ interface FormLayoutProps {
   children: ReactNode
 }
 const FormLayout: FC<FormLayoutProps> = ({ children }) => {
-  return <form className='m-6 p-6 bg-white rounded-lg shadow-md'>{children}</form>
+  return <div className='m-6 p-6 bg-white rounded-lg shadow-md'>{children}</div>
 }
 
 export default FormLayout
